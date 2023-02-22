@@ -9,6 +9,7 @@ class LabeledDatasetExtractor(Extractor):
         self.class_dict.clear()
         class_names = os.listdir(dataset_root)
         class_names.sort()
+        data_array_index = 0
 
         for class_index, class_name in enumerate(class_names):
             self.class_dict[class_index] = class_name
@@ -17,4 +18,9 @@ class LabeledDatasetExtractor(Extractor):
 
             for datapoint in datapoints:
                 datapoint_path = os.path.join(datapoints_path, datapoint)
-                # self.processor.process(datapoint_path)
+                data_array = self.processor.process(datapoint_path)
+                self.data[data_array_index] = data_array
+                self.labels[data_array_index] = class_index
+                data_array_index += 1
+            
+            print(f'Class {class_name} done.')

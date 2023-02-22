@@ -1,7 +1,11 @@
 from Extractors.LabeledDatasetExtractor import LabeledDatasetExtractor
 from Processors.JPGProcessor import JPGProcessor
+import matplotlib.pyplot as plt
 
-a = LabeledDatasetExtractor(None, 1000, (640, 480))
-print(a.extract("/home/ali/Downloads/MNIST-JPG-master/MNIST Dataset JPG format/MNIST - JPG - training"))
-b = JPGProcessor()
-b.process("Ali")
+a = LabeledDatasetExtractor(JPGProcessor(), 60000, (28, 28))
+a.extract("/home/ali/Downloads/MNIST-JPG-master/MNIST Dataset JPG format/MNIST - JPG - training")
+while True:
+    inp = int(input("Enter an index: "))
+    plt.imshow(a.data[inp], cmap='gray')
+    print(a.labels[inp])
+    plt.show()
