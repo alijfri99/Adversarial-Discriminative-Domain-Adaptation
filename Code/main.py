@@ -1,8 +1,8 @@
 from Extractors.LabeledDatasetExtractor import LabeledDatasetExtractor
-from Processors.JPGProcessor import JPGProcessor
+from Processors.ImageProcessor import ImageProcessor
 import matplotlib.pyplot as plt
 
-a = LabeledDatasetExtractor(JPGProcessor(), 60000, (28, 28))
+a = LabeledDatasetExtractor(ImageProcessor(), 60000, (28, 28))
 a.extract("/home/ali/Downloads/MNIST-JPG-master/MNIST Dataset JPG format/MNIST - JPG - training")
 while True:
     inp = int(input("Enter an index: "))
