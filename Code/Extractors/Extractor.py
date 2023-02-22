@@ -8,6 +8,6 @@ class Extractor:
         self.data = numpy.zeros((dataset_size, ) + feature_shape)
         self.labels = numpy.zeros(dataset_size)
 
-    def extract(dataset_root):
+    def extract(self, dataset_root):
         raise NotImplementedError
     
