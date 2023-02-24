@@ -29,12 +29,12 @@ class LabeledDatasetExtractor(Extractor):
 
     def save(self, dataset_output_path, output_file_name):
         dataset_output_path = os.path.abspath(dataset_output_path)
-        dataset_store_path = os.path.join(dataset_output_path, output_file_name) + ".npz"
-        class_dict_store_path = os.path.join(dataset_output_path, output_file_name) + "_class_dict.pkl"
+        dataset_store_location = os.path.join(dataset_output_path, output_file_name) + ".npz"
+        class_dict_store_location = os.path.join(dataset_output_path, output_file_name) + "_class_dict.pkl"
 
-        numpy.savez_compressed(dataset_store_path, data=self.data, labels=self.labels)
+        numpy.savez_compressed(dataset_store_location, data=self.data, labels=self.labels)
 
-        with open(class_dict_store_path, 'wb') as output_file:
+        with open(class_dict_store_location, 'wb') as output_file:
             pickle.dump(self.class_dict, output_file)
 
         print("Saved the dataset and the class dictionary.")
