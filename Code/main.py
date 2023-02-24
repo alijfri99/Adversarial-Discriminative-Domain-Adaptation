@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 a = LabeledDatasetExtractor(ImageProcessor(), 60000, (28, 28))
 a.extract("/home/alijfri99/Projects/Unsupervised-Domain-Adaptation/Data/MNIST Dataset JPG format/MNIST - JPG - training")
-a.save('../StoredDatasets/MNIST/', 'training')
+a.save('StoredDatasets/MNIST/', 'training')
 while True:
     inp = int(input("Enter an index: "))
     plt.imshow(a.data[inp], cmap='gray')

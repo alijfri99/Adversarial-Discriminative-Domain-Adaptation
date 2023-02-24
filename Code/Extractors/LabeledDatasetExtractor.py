@@ -28,6 +28,7 @@ class LabeledDatasetExtractor(Extractor):
             print(f'Class {class_name} done.')
 
     def save(self, dataset_output_path, output_file_name):
+        dataset_output_path = os.path.abspath(dataset_output_path)
         dataset_store_path = os.path.join(dataset_output_path, output_file_name) + ".npz"
         class_dict_store_path = os.path.join(dataset_output_path, output_file_name) + "_class_dict.pkl"
 
