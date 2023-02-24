@@ -12,3 +12,6 @@ class Extractor:
     def extract(self, dataset_root):
         raise NotImplementedError
     
+    def save(self, dataset_output_path, output_file_name):
+        raise NotImplementedError
+    
