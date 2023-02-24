@@ -1,12 +1,13 @@
 from Extractors.LabeledDatasetExtractor import LabeledDatasetExtractor
 from Processors.ImageProcessor import ImageProcessor
+from Datasets.LabeledDataset import LabeledDataset
 import matplotlib.pyplot as plt
 
-a = LabeledDatasetExtractor(ImageProcessor(), 60000, (28, 28))
-a.extract("/home/alijfri99/Projects/Unsupervised-Domain-Adaptation/Data/MNIST Dataset JPG format/MNIST - JPG - training")
-a.save('StoredDatasets/MNIST/', 'training')
+a = LabeledDataset("StoredDatasets/MNIST", "training")
+print("DONE!")
 while True:
     inp = int(input("Enter an index: "))
     plt.imshow(a.data[inp], cmap='gray')
     print(a.labels[inp])
+    print(a.class_dict[inp])
     plt.show()
