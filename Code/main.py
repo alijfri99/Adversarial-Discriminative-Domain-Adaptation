@@ -4,13 +4,12 @@ from Datasets.LabeledDataset import LabeledDataset
 from torchvision import transforms
 import matplotlib.pyplot as plt
 
-a = LabeledDataset("StoredDatasets/MNIST", "training", transforms.Compose([transforms.ToTensor(), transforms.RandomRotation(90)]))
-print("DONE!", len(a))
+a = LabeledDatasetExtractor(ImageProcessor(), 10000, (28, 28))
+a.extract('/home/ali/Projects/Unsupervised-Domain-Adaptation/Data/MNIST Dataset JPG format/MNIST - JPG - testing')
 while True:
     inp = int(input("Enter an index: "))
-    b = a.__getitem__(inp)
-    print(b, type(b))
-    plt.imshow(a.__getitem__(inp)[0].numpy()[0], cmap='gray')
-    print(a.labels[inp])
-    print(a.class_dict[a.labels[inp]])
+    b = a.data[inp]
+    l = a.class_dict[a.labels[inp]]
+    plt.imshow(b, cmap='gray')
+    print(l)
     plt.show()
