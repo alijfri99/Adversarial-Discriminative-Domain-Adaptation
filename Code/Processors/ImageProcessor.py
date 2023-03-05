@@ -5,5 +5,5 @@ from Processors.Processor import Processor
 class ImageProcessor(Processor):
     def process(self, path):
         image = Image.open(path)
-        image = numpy.asarray(image)
+        image = numpy.array(image, dtype=numpy.float32)
         return image
