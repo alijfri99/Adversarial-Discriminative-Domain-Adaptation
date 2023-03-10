@@ -3,14 +3,16 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 
 class NetworkTester:
-    def __init__(self, target_encoder, classifier,  target_dataset):
-        self.target_encoder = target_encoder
+    def __init__(self, encoder, classifier,  target_dataset, batch_size, device):
+        self.encoder = encoder
         self.classifier = classifier
         self.target_dataset = target_dataset
+        self.batch_size = batch_size
+        self.device = device
 
 
-    def test_network(self, batch_size, device):
-        train_loader = DataLoader(self.target_dataset, batch_size, False)
+    def test(self):
+        test_loader = DataLoader(self.target_dataset, self.batch_size, False)
         
         with torch.no_grad():
             n_correct = 0
@@ -20,8 +22,8 @@ class NetworkTester:
             n_class_samples = [0 for i in range(10)]
 
             for data, labels in test_loader:
-                data = data.to(device)
-                labels = labels.to(device)
+                data = data.to(self.device)
+                labels = labels.to(self.device)
 
                 features = self.target_encoder(data)
                 predictions = self.classifier(features)
