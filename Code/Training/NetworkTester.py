@@ -22,16 +22,18 @@ class NetworkTester:
             n_class_samples = [0 for i in range(10)]
 
             for data, labels in test_loader:
+                data = data.type(torch.float)
+                labels = labels.type(torch.LongTensor)
                 data = data.to(self.device)
                 labels = labels.to(self.device)
 
-                features = self.target_encoder(data)
+                features = self.encoder(data)
                 predictions = self.classifier(features)
-
+                predictions = torch.argmax(predictions, dim=1)
                 n_samples += labels.size(0)
                 n_correct += (predictions == labels).sum().item()
 
-                for i in range(batch_size):
+                for i in range(self.batch_size):
                     label = labels[i]
                     pred = predictions[i]
                     if (label == pred):
@@ -43,4 +45,4 @@ class NetworkTester:
 
             for i in range(10):
                 Accuracy = 100.0 *  n_class_correct[i]/ n_class_samples[i]
-                print(f'Accuracy of = {classes[i]} : {Accuracy} %')
+                print(f'Accuracy of = {i} : {Accuracy} %')

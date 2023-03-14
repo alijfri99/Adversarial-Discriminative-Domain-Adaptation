@@ -20,6 +20,9 @@ class SourceTrainer:
 
         for epoch in range(self.num_epochs):
              for index, (data, labels) in enumerate(train_loader):
+                labels = labels.type(torch.LongTensor)
+                data = data.type(torch.float)
+
                 data = data.to(self.device)
                 labels = labels.to(self.device)
                 self.optimizer.zero_grad()
@@ -30,3 +33,5 @@ class SourceTrainer:
 
                 loss.backward()
                 self.optimizer.step()
+
+        print("Finished Training")
