@@ -5,8 +5,8 @@ class Extractor:
         self.processor = processor
         self.dataset_size = dataset_size
         self.feature_shape = feature_shape
-        self.data = numpy.zeros((dataset_size, ) + feature_shape, dtype=numpy.float32)
-        self.labels = numpy.zeros(dataset_size, dtype=numpy.float32)
+        self.data = numpy.zeros((dataset_size, ) + feature_shape, dtype=numpy.uint8)
+        self.labels = numpy.zeros(dataset_size, dtype=numpy.uint8)
         self.class_dict = dict()
 
     def extract(self, dataset_root):
