@@ -33,7 +33,7 @@ class NetworkTester:
                 n_samples += labels.size(0)
                 n_correct += (predictions == labels).sum().item()
 
-                for i in range(self.batch_size):
+                for i in range(len(data)):
                     label = labels[i]
                     pred = predictions[i]
                     if (label == pred):
