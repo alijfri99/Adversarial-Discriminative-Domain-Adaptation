@@ -25,10 +25,12 @@ class Adapter:
         self.label_one = torch.ones((self.batch_size, 1), dtype=torch.float32)
 
     def adapt(self):
-        for iteration in self.num_iterations:
+        for iteration in range(self.num_iterations):
             discriminator_loss = self.train_discriminator()
             target_encoder_loss = self.train_target_encoder()
-            print(f'Iteration {iteration}: Discriminator Loss: {discriminator_loss:.2f}, Target Encoder Loss: {target_encoder_loss:.2f}')
+            
+            if (iteration + 1) % 100 == 0:
+                print(f'Iteration {iteration + 1}: Discriminator Loss: {discriminator_loss:.2f}, Target Encoder Loss: {target_encoder_loss:.2f}')
 
     def train_discriminator(self):
         self.discriminator_optimizer.zero_grad()

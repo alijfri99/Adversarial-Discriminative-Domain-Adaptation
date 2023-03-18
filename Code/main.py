@@ -3,6 +3,7 @@ from Processors.ImageProcessor import ImageProcessor
 from Datasets.LabeledDataset import LabeledDataset
 from torchvision import transforms
 from Networks.Encoders.LeNetEncoder import LeNetEncoder
+from Networks.Discriminators.LeNetDiscriminator import LeNetDiscriminator
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from Training.SourceTrainer import SourceTrainer
@@ -15,53 +16,27 @@ import torchvision
 
 mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]), sample_size=2000)
 usps = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
+
 source_encoder = LeNetEncoder()
 target_encoder = LeNetEncoder()
-classifier = nn.Sequential(nn.Linear(500, 1), nn.Sigmoid())
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(list(target_encoder.parameters()) + list(classifier.parameters()), lr = 0.001)
-adaper = Adapter(source_encoder, target_encoder, classifier, mnist, usps, None, None, 10000, 128, 'cpu')
-adaper.train_discriminator()
-
-'''
-#labeledDataset = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]))
-labeledDataset = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
-print("dataset size:", labeledDataset.__len__(), labeledDataset.data.shape, labeledDataset.labels.shape)
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#device = torch.device('cpu')
-
-num_epoch = 2
-batch_size = 100
-learning_rate = 0.001
-
-loader = DataLoader(labeledDataset, 4)
-encoder = LeNetEncoder()
-
 classifier = nn.Linear(500, 10)
-criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(list(encoder.parameters()) + list(classifier.parameters()), lr = learning_rate)
+discriminator = LeNetDiscriminator()
+batch_size = 128
 
-sourceTrainer = SourceTrainer(encoder, classifier, labeledDataset, criterion, optimizer, num_epoch, batch_size, device, True)
-sourceTrainer.train()
+classification_criterion = nn.CrossEntropyLoss()
 
-netTester = NetworkTester(encoder, classifier, labeledDataset, batch_size, device)
-netTester.test()
-'''
+classification_optimizer = torch.optim.Adam(list(source_encoder.parameters()) + list(classifier.parameters()), lr=0.001)
+source_trainer = SourceTrainer(source_encoder, classifier, mnist, classification_criterion, classification_optimizer, 10, batch_size, 'cpu')
+source_trainer.train()
+source_tester = NetworkTester(source_encoder, classifier, mnist, batch_size, 'cpu')
+source_tester.test()
 
+target_encoder.load_state_dict(source_encoder.state_dict())
 
-'''
-# USPS Dataset Extractor (28, 28)
-target_size = (28, 28)
-training_dataset_size = 60000 
-testing_dataset_size = 10000
+discriminator_optimizer = torch.optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
+target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
-imageProcessor = ImageProcessor()
-training_dataset_extractor = LabeledDatasetExtractor(imageProcessor, training_dataset_size, target_size)
-training_dataset_extractor.extract('Data/MNIST/training')
-training_dataset_extractor.save('Code/StoredDatasets/MNIST', 'mnist_training')
-
-testing_dataset_extractor = LabeledDatasetExtractor(imageProcessor, testing_dataset_size, target_size)
-testing_dataset_extractor.extract('Data/MNIST/testing')
-testing_dataset_extractor.save('Code/StoredDatasets/MNIST', 'mnist_testing')
-'''
-
+adapter = Adapter(source_encoder, target_encoder, discriminator, mnist, usps, discriminator_optimizer, target_encoder_optimizer, 10000, batch_size, 'cpu')
+adapter.adapt()
+target_tester = NetworkTester(target_encoder, classifier, usps, batch_size, 'cpu')
+target_tester.test()

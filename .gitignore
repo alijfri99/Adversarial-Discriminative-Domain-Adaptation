@@ -3,5 +3,6 @@ Code/Processors/__pycache__/
 Code/Datasets/__pycache__/
 Code/Networks/Encoders/__pycache__/
 Code/Training/__pycache__/
+Code/Networks/Discriminators/__pycache__/
 Data/
 StoredDatasets/
