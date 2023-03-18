@@ -25,7 +25,10 @@ class Adapter:
         self.label_one = torch.ones((self.batch_size, 1), dtype=torch.float32)
 
     def adapt(self):
-        pass
+        for iteration in self.num_iterations:
+            discriminator_loss = self.train_discriminator()
+            target_encoder_loss = self.train_target_encoder()
+            print(f'Iteration {iteration}: Discriminator Loss: {discriminator_loss:.2f}, Target Encoder Loss: {target_encoder_loss:.2f}')
 
     def train_discriminator(self):
         self.discriminator_optimizer.zero_grad()
@@ -42,9 +45,11 @@ class Adapter:
         discriminator_fake_predictions = self.discriminator(fake_data)
         discriminator_fake_loss = self.criterion(discriminator_fake_predictions, self.label_zero)
 
-        discriminator_loss = 0.5 * (discriminator_real_loss + discriminator_fake_loss)
+        discriminator_loss = discriminator_real_loss + discriminator_fake_loss
         discriminator_loss.backward()
         self.discriminator_optimizer.step()
+
+        return discriminator_loss.item()
 
     def train_target_encoder(self):
         self.target_encoder_optimizer.zero_grad()
@@ -57,3 +62,5 @@ class Adapter:
         target_encoder_loss = self.criterion(discriminator_predictions, self.label_one)
         target_encoder_loss.backward()
         self.target_encoder_optimizer.step()
+
+        return target_encoder_loss.item()
