@@ -16,7 +16,7 @@ import torchvision
 
 
 #labeledDataset = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]))
-labeledDataset = LabeledDataset(r'Code\StoredDatasets\USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]))
+labeledDataset = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
 print("dataset size:", labeledDataset.__len__(), labeledDataset.data.shape, labeledDataset.labels.shape)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #device = torch.device('cpu')
@@ -40,18 +40,18 @@ netTester.test()
 
 
 
+'''
 # USPS Dataset Extractor (28, 28)
-r"""
-#target_size = (28, 28)
+target_size = (28, 28)
 training_dataset_size = 7291 
 testing_dataset_size = 2007 
 
 imageProcessor = ImageProcessor()
 training_dataset_extractor = LabeledDatasetExtractor(imageProcessor, training_dataset_size, target_size)
-training_dataset_extractor.extract(r'Code\DatasetUSPS\training')
-training_dataset_extractor.save(r'Code\StoredDatasets\USPS', 'usps_training')
+training_dataset_extractor.extract('Data/USPS/training')
+training_dataset_extractor.save('Code/StoredDatasets/USPS', 'usps_training')
 
 testing_dataset_extractor = LabeledDatasetExtractor(imageProcessor, testing_dataset_size, target_size)
-testing_dataset_extractor.extract(r'Code\DatasetUSPS\testing')
-testing_dataset_extractor.save(r'Code\StoredDatasets\USPS', 'usps_testing')
-"""
+testing_dataset_extractor.extract('Data/USPS/testing')
+testing_dataset_extractor.save('Code/StoredDatasets/USPS', 'usps_testing')
+'''

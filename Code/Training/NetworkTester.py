@@ -41,8 +41,8 @@ class NetworkTester:
                     n_class_samples[label] += 1
 
             Accuracy = 100.0 * n_correct/n_samples
-            print(f'Accuracy of the Network = {Accuracy} %')
+            print(f'Accuracy of the Network: {Accuracy:.2f} %')
 
             for i in range(10):
                 Accuracy = 100.0 *  n_class_correct[i]/ n_class_samples[i]
-                print(f'Accuracy of = {i} : {Accuracy} %')
+                print(f'Accuracy of class {i}: {Accuracy:.2f} %')
