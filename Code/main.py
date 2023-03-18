@@ -17,11 +17,11 @@ mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms
 usps = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
 source_encoder = LeNetEncoder()
 target_encoder = LeNetEncoder()
-classifier = nn.Linear(500, 10)
+classifier = nn.Sequential(nn.Linear(500, 1), nn.Sigmoid())
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(list(target_encoder.parameters()) + list(classifier.parameters()), lr = 0.001)
-adaper = Adapter(classifier, source_encoder, target_encoder, mnist, usps, criterion, optimizer, 5, 4, 'cpu')
-adaper.adapt()
+adaper = Adapter(source_encoder, target_encoder, classifier, mnist, usps, None, None, 10000, 128, 'cpu')
+adaper.train_discriminator()
 
 '''
 #labeledDataset = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]))
