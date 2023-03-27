@@ -11,6 +11,7 @@ class LabeledDatasetExtractor(Extractor):
     def extract(self, dataset_root):
         self.class_dict.clear()
         class_names = os.listdir(dataset_root)
+        class_names.sort()
         data_array_index = 0
 
         for class_index, class_name in enumerate(class_names):

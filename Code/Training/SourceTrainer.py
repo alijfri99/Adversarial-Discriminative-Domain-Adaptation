@@ -19,7 +19,7 @@ class SourceTrainer:
         train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
 
         for epoch in range(self.num_epochs):
-             for index, (data, labels) in enumerate(train_loader):
+            for index, (data, labels) in enumerate(train_loader):
                 labels = labels.type(torch.LongTensor)
                 data = data.type(torch.float)
 
@@ -33,5 +33,6 @@ class SourceTrainer:
 
                 loss.backward()
                 self.optimizer.step()
+            print(f'Epoch {epoch + 1} done.')
 
         print("Finished Training")
