@@ -37,6 +37,7 @@ class Adapter:
 
         source_batch = next(iter(self.source_loader))
         source_batch = source_batch[:][0]
+        source_batch = source_batch.type(torch.float)
         real_data = self.source_encoder(source_batch).detach()
         discriminator_real_predictions = self.discriminator(real_data)
         discriminator_real_loss = self.criterion(discriminator_real_predictions, self.label_one)
