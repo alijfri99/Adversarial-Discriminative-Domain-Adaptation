@@ -7,9 +7,9 @@ import torch.nn as nn
 
 class Adapter:
     def __init__(self, source_encoder, target_encoder, discriminator, source_dataset, target_dataset, discriminator_optimizer, target_encoder_optimizer, num_iterations, batch_size, device):
-        self.source_encoder = source_encoder.to(device)
-        self.target_encoder = target_encoder.to(device)
-        self.discriminator = discriminator.to(device)
+        self.source_encoder = source_encoder
+        self.target_encoder = target_encoder
+        self.discriminator = discriminator
         self.source_dataset = source_dataset
         self.target_dataset = target_dataset
         self.discriminator_optimizer = discriminator_optimizer

@@ -5,8 +5,8 @@ from torch.utils.data import DataLoader
 class SourceTrainer:
     def __init__(self, source_encoder, classifier,  source_dataset, criterion, optimizer,
                      num_epochs, batch_size, device, shuffle=True):
-        self.source_encoder = source_encoder.to(device)
-        self.classifier = classifier.to(device)
+        self.source_encoder = source_encoder
+        self.classifier = classifier
         self.source_dataset = source_dataset
         self.criterion = criterion
         self.optimizer = optimizer
