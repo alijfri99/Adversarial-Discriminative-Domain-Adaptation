@@ -4,8 +4,8 @@ from torch.utils.data import DataLoader
 
 class NetworkTester:
     def __init__(self, encoder, classifier,  target_dataset, batch_size, device):
-        self.encoder = encoder
-        self.classifier = classifier
+        self.encoder = encoder.to(device)
+        self.classifier = classifier.to(device)
         self.target_dataset = target_dataset
         self.batch_size = batch_size
         self.device = device
