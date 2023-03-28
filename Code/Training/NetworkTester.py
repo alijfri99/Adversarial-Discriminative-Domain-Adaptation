@@ -19,8 +19,8 @@ class NetworkTester:
             n_correct = 0
             n_samples = 0
 
-            n_class_correct = [0 for i in range(numpy.max(self.target_dataset) + 1)]
-            n_class_samples = [0 for i in range(numpy.max(self.target_dataset) + 1)]
+            n_class_correct = [0 for i in range(numpy.max(self.target_dataset.labels) + 1)]
+            n_class_samples = [0 for i in range(numpy.max(self.target_dataset.labels) + 1)]
 
             for data, labels in test_loader:
                 data = data.type(torch.float)
@@ -44,6 +44,6 @@ class NetworkTester:
             Accuracy = 100.0 * n_correct/n_samples
             print(f'Accuracy of the Network: {Accuracy:.2f} %')
 
-            for i in range(numpy.max(self.target_dataset) + 1):
+            for i in range(numpy.max(self.target_dataset.labels) + 1):
                 Accuracy = 100.0 *  n_class_correct[i]/ n_class_samples[i]
                 print(f'Accuracy of class {i}: {Accuracy:.2f} %')
