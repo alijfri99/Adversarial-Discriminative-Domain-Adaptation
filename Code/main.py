@@ -7,6 +7,7 @@ from Networks.Discriminators.LeNetDiscriminator import LeNetDiscriminator
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from Experiments.Experiment import Experiment
+from Networks.Encoders.Identity import Identity
 import torch
 import torch.nn as nn
 import torchvision
@@ -47,6 +48,8 @@ discriminator_lr = target_encoder_lr = 0.0002
 experiment = Experiment(mnist, usps, source_encoder, target_encoder, classifier, discriminator, batch_size, classification_criterion,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, 'cpu')
 experiment.run()'''
-vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
-vgg.classifier = nn.Sequential()
-print(vgg)
+vgg = models.resnet50(models.ResNet50_Weights.IMAGENET1K_V1)
+vgg.fc = Identity()
+inp = torch.randn((1, 3, 224, 224))
+out = vgg(inp)
+print(out, out.shape)

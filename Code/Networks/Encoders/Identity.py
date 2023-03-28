@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 
 class Identity(nn.Module):
@@ -5,4 +6,4 @@ class Identity(nn.Module):
         super().__init__()
 
     def forward(self, x):
-        return x
+        return torch.flatten(x)
