@@ -9,6 +9,7 @@ from torch.utils.data import DataLoader
 from Experiments.Experiment import Experiment
 from Networks.Encoders.Identity import Identity
 from Networks.Encoders.VGG16Encoder import VGG16Encoder
+from Networks.Classifiers.VGG16Classifier import VGG16Classifier
 import torch
 import torch.nn as nn
 import torchvision
@@ -50,4 +51,12 @@ experiment = Experiment(svhn, mnist, source_encoder, target_encoder, classifier,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, 'cpu')
 experiment.run()'''
 vgg = VGG16Encoder()
+classifier = VGG16Classifier()
 print(vgg)
+print(classifier)
+
+inp = torch.randn((3, 224, 224))
+out = vgg(inp)
+print(out, out.shape)
+out2 = classifier(out)
+print(out2, out2.shape)

@@ -4,6 +4,7 @@ Code/Datasets/__pycache__/
 Code/Networks/Encoders/__pycache__/
 Code/Training/__pycache__/
 Code/Networks/Discriminators/__pycache__/
+Code/Networks/Classifiers/__pycache__/
 Code/Experiments/__pycache__/
 Data/
 StoredDatasets/
