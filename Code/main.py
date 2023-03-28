@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from Experiments.Experiment import Experiment
 from Networks.Encoders.Identity import Identity
+from Networks.Encoders.VGG16Encoder import VGG16Encoder
 import torch
 import torch.nn as nn
 import torchvision
@@ -29,7 +30,7 @@ while True:
     plt.imshow(svhn[inp][0][0], cmap='gray')
     plt.show()'''
 
-svhn = LabeledDataset('Code/StoredDatasets/NYUD2', 'nyud2_training', transforms.Compose([transforms.ToTensor()]))
+'''svhn = LabeledDataset('Code/StoredDatasets/NYUD2', 'nyud2_training', transforms.Compose([transforms.ToTensor()]))
 mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]))
 print(svhn.data.shape)
 input()
@@ -47,4 +48,6 @@ discriminator_lr = target_encoder_lr = 0.0002
 
 experiment = Experiment(svhn, mnist, source_encoder, target_encoder, classifier, discriminator, batch_size, classification_criterion,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, 'cpu')
-experiment.run()
+experiment.run()'''
+vgg = VGG16Encoder()
+print(vgg)
