@@ -29,16 +29,14 @@ extractor.save('Code/StoredDatasets/MNIST', 'mnist_testing')'''
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
 
-nyurgb = LabeledDataset('/content/drive/MyDrive/StoredDatasets/NYUD2', 'nyud2_training', transforms.ToTensor())
-nyudepth = LabeledDataset('/content/drive/MyDrive/StoredDatasets/NYUD2', 'nyud2_testing', transforms.ToTensor())
-print(numpy.unique(nyurgb.labels))
-print(numpy.min(nyurgb.labels))
-print(numpy.max(nyurgb.labels))
+svhn = LabeledDataset('Code/StoredDatasets/SVHN', 'svhn_training', transforms.ToTensor())
+mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.ToTensor())
+usps = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.ToTensor())
 
-source_encoder = VGG16Encoder().to(device)
-target_encoder = VGG16Encoder().to(device)
-classifier = VGG16Classifier().to(device)
-discriminator = VGG16Discriminator().to(device)
+source_encoder = LeNetEncoder().to(device)
+target_encoder = LeNetEncoder().to(device)
+classifier = nn.Linear(500, 10).to(device)
+discriminator = LeNetDiscriminator().to(device)
 batch_size = 128
 num_iterations = 20000
 classification_criterion = nn.CrossEntropyLoss()
@@ -49,6 +47,14 @@ discriminator_lr = target_encoder_lr = 0.0002
 
 print("Starting the experiment")
 
-experiment = Experiment(nyurgb, nyudepth, source_encoder, target_encoder, classifier, discriminator, epochs, batch_size, classification_criterion,
+experiment = Experiment(svhn, mnist, source_encoder, target_encoder, classifier, discriminator, epochs, batch_size, classification_criterion,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, device)
 experiment.run()
+
+'''extractor = LabeledDatasetExtractor(ImageProcessor(), 7291, (28, 28))
+extractor.extract('Data/USPS/training')
+extractor.save('Code/StoredDatasets/USPS', 'usps_training')
+
+extractor = LabeledDatasetExtractor(ImageProcessor(), 2007, (28, 28))
+extractor.extract('Data/USPS/testing')
+extractor.save('Code/StoredDatasets/USPS', 'usps_testing')'''

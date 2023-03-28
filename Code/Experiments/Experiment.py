@@ -34,7 +34,7 @@ class Experiment:
         discriminator_optimizer = torch.optim.Adam(self.discriminator.parameters(), lr=self.discriminator_lr, betas=(0.5, 0.999))
         target_encoder_optimizer = torch.optim.Adam(self.target_encoder.parameters(), lr=self.target_encoder_lr, betas=(0.5, 0.999))
 
-        adapter = Adapter(self.source_encoder, self.target_encoder, self.discriminator, self.source_dataset, self.target_dataset,
+        adapter = Adapter(self.source_encoder, self.target_encoder, self.discriminator, self.classifier, self.source_dataset, self.target_dataset,
                              discriminator_optimizer, target_encoder_optimizer, self.num_iterations, self.batch_size, self.device)
         adapter.adapt()
         target_tester = NetworkTester(self.target_encoder, self.classifier, self.target_dataset, self.batch_size, self.device)
