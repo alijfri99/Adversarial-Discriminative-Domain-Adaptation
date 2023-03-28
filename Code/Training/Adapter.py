@@ -35,15 +35,15 @@ class Adapter:
     def train_discriminator(self):
         self.discriminator_optimizer.zero_grad()
 
-        source_batch = next(iter(self.source_loader)).to(self.device)
-        source_batch = source_batch[:][0]
+        source_batch = next(iter(self.source_loader))
+        source_batch = source_batch[:][0].to(self.device)
         source_batch = source_batch.type(torch.float)
         real_data = self.source_encoder(source_batch).detach()
         discriminator_real_predictions = self.discriminator(real_data)
         discriminator_real_loss = self.criterion(discriminator_real_predictions, self.label_one)
         
-        target_batch = next(iter(self.target_loader)).to(self.device)
-        target_batch = target_batch[:][0]
+        target_batch = next(iter(self.target_loader))
+        target_batch = target_batch[:][0].to(self.device)
         fake_data = self.target_encoder(target_batch).detach()
         discriminator_fake_predictions = self.discriminator(fake_data)
         discriminator_fake_loss = self.criterion(discriminator_fake_predictions, self.label_zero)
@@ -57,8 +57,8 @@ class Adapter:
     def train_target_encoder(self):
         self.target_encoder_optimizer.zero_grad()
 
-        target_batch = next(iter(self.target_loader)).to(self.device)
-        target_batch = target_batch[:][0]
+        target_batch = next(iter(self.target_loader))
+        target_batch = target_batch[:][0].to(self.device)
         target_encoder_predictions = self.target_encoder(target_batch)
         discriminator_predictions = self.discriminator(target_encoder_predictions)
         
