@@ -6,4 +6,4 @@ class Identity(nn.Module):
         super().__init__()
 
     def forward(self, x):
-        return torch.flatten(x)
+        return x
