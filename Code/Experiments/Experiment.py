@@ -5,7 +5,7 @@ from Training.Adapter import Adapter
 
 
 class Experiment:
-    def __init__(self, source_dataset, target_dataset,  source_encoder, target_encoder,  classifier, discriminator, batch_size, classification_criterion,
+    def __init__(self, source_dataset, target_dataset, source_encoder, target_encoder, classifier, discriminator, epochs, batch_size, classification_criterion,
                     classification_lr,  discriminator_lr, target_encoder_lr, num_iterations, device):
         self.source_dataset = source_dataset
         self.target_dataset = target_dataset
@@ -13,6 +13,7 @@ class Experiment:
         self.target_encoder = target_encoder
         self.classifier = classifier
         self.discriminator = discriminator
+        self.epochs = epochs
         self.batch_size = batch_size
         self.classification_criterion = classification_criterion
         self.classification_lr = classification_lr
@@ -23,9 +24,8 @@ class Experiment:
 
 
     def run(self):
-        
         classification_optimizer = torch.optim.Adam(list(self.source_encoder.parameters()) + list(self.classifier.parameters()), lr=self.classification_lr)
-        source_trainer = SourceTrainer(self.source_encoder, self.classifier, self.source_dataset, self.classification_criterion, classification_optimizer, 10, self.batch_size, self.device)
+        source_trainer = SourceTrainer(self.source_encoder, self.classifier, self.source_dataset, self.classification_criterion, classification_optimizer, self.epochs, self.batch_size, self.device)
         source_trainer.train()
         source_tester = NetworkTester(self.source_encoder, self.classifier, self.source_dataset, self.batch_size, self.device)
         source_tester.test()
