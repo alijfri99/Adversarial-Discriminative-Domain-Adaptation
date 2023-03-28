@@ -29,8 +29,10 @@ while True:
     plt.imshow(svhn[inp][0][0], cmap='gray')
     plt.show()'''
 
-svhn = LabeledDataset('Code/StoredDatasets/SVHN', 'svhn_training', transforms.Compose([transforms.ToTensor()]))
+svhn = LabeledDataset('Code/StoredDatasets/NYUD2', 'nyud2_training', transforms.Compose([transforms.ToTensor()]))
 mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]))
+print(svhn.data.shape)
+input()
 
 source_encoder = LeNetEncoder()
 target_encoder = LeNetEncoder()
