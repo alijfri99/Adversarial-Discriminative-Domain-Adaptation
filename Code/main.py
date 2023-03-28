@@ -3,14 +3,12 @@ from Processors.ImageProcessor import ImageProcessor
 from Datasets.LabeledDataset import LabeledDataset
 from torchvision import transforms
 from Networks.Encoders.LeNetEncoder import LeNetEncoder
-from Networks.Discriminators.LeNetDiscriminator import LeNetDiscriminator
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from Experiments.Experiment import Experiment
 from Networks.Encoders.Identity import Identity
 from Networks.Encoders.VGG16Encoder import VGG16Encoder
 from Networks.Classifiers.VGG16Classifier import VGG16Classifier
-from Networks.Discriminators.VGG16Discriminator import VGG16Discriminator
 from Networks.Encoders.ResNet50Encoder import ResNet50Encoder
 import torch
 import torch.nn as nn

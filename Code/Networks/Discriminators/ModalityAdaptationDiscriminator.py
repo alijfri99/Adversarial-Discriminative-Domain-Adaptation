@@ -1,9 +1,9 @@
 import torch.nn as nn
 
 class ModalityAdaptationDiscriminator(nn.Module):
-    def __init__(self):
+    def __init__(self, input_dim):
         super().__init__()
-        self.linear1 = nn.Linear(25088, 1024)
+        self.linear1 = nn.Linear(input_dim, 1024)
         self.linear2 = nn.Linear(1024, 2048)
         self.linear3 = nn.Linear(2048, 1)
         self.relu = nn.ReLU()
