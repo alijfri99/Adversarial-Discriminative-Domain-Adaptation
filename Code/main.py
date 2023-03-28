@@ -30,7 +30,7 @@ while True:
 #svhn = LabeledDataset('Code/StoredDatasets/SVHN', 'svhn_training', transforms.Compose([transforms.ToTensor()]))
 #mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]))
 
-mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]), sample_size=2000)
+'''mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]), sample_size=2000)
 usps = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
 
 source_encoder = LeNetEncoder()
@@ -46,4 +46,7 @@ discriminator_lr = target_encoder_lr = 0.0002
 
 experiment = Experiment(mnist, usps, source_encoder, target_encoder, classifier, discriminator, batch_size, classification_criterion,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, 'cpu')
-experiment.run()
+experiment.run()'''
+vgg = models.vgg16(weights=models.VGG16_Weights.IMAGENET1K_V1)
+vgg.classifier = nn.Sequential()
+print(vgg)
