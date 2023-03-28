@@ -13,6 +13,7 @@ import torch.nn as nn
 import torchvision
 from torchvision import models
 import numpy
+import os
 
 '''extractor = LabeledDatasetExtractor(ImageProcessor(), 60000, (28, 28))
 extractor.extract('Data/MNIST/training')
@@ -28,11 +29,8 @@ while True:
     plt.imshow(svhn[inp][0][0], cmap='gray')
     plt.show()'''
 
-#svhn = LabeledDataset('Code/StoredDatasets/SVHN', 'svhn_training', transforms.Compose([transforms.ToTensor()]))
-#mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]))
-
-'''mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'training', transforms.Compose([transforms.ToTensor()]), sample_size=2000)
-usps = LabeledDataset('Code/StoredDatasets/USPS', 'usps_training', transforms.Compose([transforms.ToTensor()]), sample_size=1800)
+svhn = LabeledDataset('Code/StoredDatasets/SVHN', 'svhn_training', transforms.Compose([transforms.ToTensor()]))
+mnist = LabeledDataset('Code/StoredDatasets/MNIST', 'mnist_training', transforms.Compose([transforms.ToTensor()]))
 
 source_encoder = LeNetEncoder()
 target_encoder = LeNetEncoder()
@@ -45,11 +43,6 @@ classification_criterion = nn.CrossEntropyLoss()
 classification_lr = 0.001
 discriminator_lr = target_encoder_lr = 0.0002
 
-experiment = Experiment(mnist, usps, source_encoder, target_encoder, classifier, discriminator, batch_size, classification_criterion,
+experiment = Experiment(svhn, mnist, source_encoder, target_encoder, classifier, discriminator, batch_size, classification_criterion,
                         classification_lr, discriminator_lr, target_encoder_lr, num_iterations, 'cpu')
-experiment.run()'''
-vgg = models.resnet50(models.ResNet50_Weights.IMAGENET1K_V1)
-vgg.fc = Identity()
-inp = torch.randn((1, 3, 224, 224))
-out = vgg(inp)
-print(out, out.shape)
+experiment.run()
