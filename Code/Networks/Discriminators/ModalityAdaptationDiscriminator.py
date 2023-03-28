@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-class VGG16Discriminator(nn.Module):
+class ModalityAdaptationDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
         self.linear1 = nn.Linear(25088, 1024)

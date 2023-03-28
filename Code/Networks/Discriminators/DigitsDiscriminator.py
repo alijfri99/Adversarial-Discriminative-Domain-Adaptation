@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-class LeNetDiscriminator(nn.Module):
+class DigitsDiscriminator(nn.Module):
     def __init__(self):
         super().__init__()
         self.linear1 = nn.Linear(500, 500)
