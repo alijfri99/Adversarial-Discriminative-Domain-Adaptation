@@ -14,6 +14,10 @@ class SourceTrainer:
         self.batch_size = batch_size
         self.device = device
         self.shuffle = shuffle
+        self.num_batches = len(source_dataset) // batch_size
+
+        if len(source_dataset) % batch_size != 0:
+            self.num_batches += 1
         
     def train(self):
         train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
@@ -33,6 +37,6 @@ class SourceTrainer:
 
                 loss.backward()
                 self.optimizer.step()
-            print(f'Epoch {epoch + 1} done.')
+                print(f'Epoch {epoch + 1}, Batch {index + 1}/{self.num_batches}, Loss: {loss.item()}')
 
         print("Finished Training")
