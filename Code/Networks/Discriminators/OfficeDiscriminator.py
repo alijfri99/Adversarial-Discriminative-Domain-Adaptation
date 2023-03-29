@@ -1,6 +1,6 @@
 import torch.nn as nn
 
-class ModalityAdaptationDiscriminator(nn.Module):
+class OfficeDiscriminator(nn.Module):
     def __init__(self, input_dim):
         super().__init__()
         self.linear1 = nn.Linear(input_dim, 1024)
