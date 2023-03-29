@@ -8,8 +8,8 @@ from Experiments.Experiment import Experiment
 device = ('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Device: {device}')
 
-dslr = LabeledDataset('Code/StoredDatasets/Office-31/dslr', 'dslr', transforms.ToTensor())
 webcam = LabeledDataset('Code/StoredDatasets/Office-31/Webcam', 'webcam', transforms.ToTensor())
+dslr = LabeledDataset('Code/StoredDatasets/Office-31/dslr', 'dslr', transforms.ToTensor())
 
 source_encoder = ResNet18Encoder().to(device)
 target_encoder = ResNet18Encoder().to(device)
@@ -26,6 +26,6 @@ target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.00
 
 print('Starting the DSLR --> Webcam experiment.')
 
-experiment = Experiment(dslr, webcam, source_encoder, target_encoder, classifier, discriminator, classification_epochs, batch_size, classification_criterion,
+experiment = Experiment(webcam, dslr, source_encoder, target_encoder, classifier, discriminator, classification_epochs, batch_size, classification_criterion,
                         classification_optimizer, discriminator_optimizer, target_encoder_optimizer, adaptation_iterations, device)
 experiment.run()

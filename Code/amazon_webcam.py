@@ -13,7 +13,7 @@ webcam = LabeledDataset('Code/StoredDatasets/Office-31/Webcam', 'webcam', transf
 
 source_encoder = ResNet18Encoder().to(device)
 target_encoder = ResNet18Encoder().to(device)
-classifier = torch.nn.Linear(512, 19).to(device)
+classifier = torch.nn.Linear(512, 31).to(device)
 discriminator = OfficeDiscriminator(512).to(device)
 classification_epochs = 909
 batch_size = 128
