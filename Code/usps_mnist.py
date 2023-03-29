@@ -15,9 +15,8 @@ source_encoder = LeNetEncoder().to(device)
 target_encoder = LeNetEncoder().to(device)
 classifier = torch.nn.Linear(500, 10).to(device)
 discriminator = DigitsDiscriminator().to(device)
-classification_epochs = 10
+num_iterations = 10000
 batch_size = 128
-adaptation_iterations = 10000
 classification_criterion = torch.nn.CrossEntropyLoss()
 
 classification_optimizer = torch.optim.Adam(list(source_encoder.parameters()) + list(classifier.parameters()), lr=0.001)
@@ -26,6 +25,6 @@ target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.00
 
 print('Starting the USPS --> MNIST experiment.')
 
-experiment = Experiment(usps, mnist, source_encoder, target_encoder, classifier, discriminator, classification_epochs, batch_size, classification_criterion,
-                        classification_optimizer, discriminator_optimizer, target_encoder_optimizer, adaptation_iterations, device)
+experiment = Experiment(usps, mnist, source_encoder, target_encoder, classifier, discriminator, num_iterations, batch_size, classification_criterion,
+                        classification_optimizer, discriminator_optimizer, target_encoder_optimizer, device)
 experiment.run()

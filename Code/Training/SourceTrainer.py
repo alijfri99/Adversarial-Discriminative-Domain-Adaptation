@@ -4,17 +4,16 @@ from torch.utils.data import DataLoader
 
 class SourceTrainer:
     def __init__(self, source_encoder, classifier,  source_dataset, criterion, optimizer,
-                     num_epochs, batch_size, device, shuffle=True):
+                     num_iterations, batch_size, device, shuffle=True):
         self.source_encoder = source_encoder
         self.classifier = classifier
         self.source_dataset = source_dataset
         self.criterion = criterion
         self.optimizer = optimizer
-        self.num_epochs = num_epochs
+        self.num_iterations = num_iterations
         self.batch_size = batch_size
         self.device = device
         self.shuffle = shuffle
-        self.num_batches = len(source_dataset) // batch_size
 
         if len(source_dataset) % batch_size != 0:
             self.num_batches += 1
@@ -22,21 +21,25 @@ class SourceTrainer:
     def train(self):
         train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
 
-        for epoch in range(self.num_epochs):
-            for index, (data, labels) in enumerate(train_loader):
-                labels = labels.type(torch.LongTensor)
-                data = data.type(torch.float)
+        for iteration in range(self.num_iterations):
+            batch = next(iter(train_loader))
+            data = batch[:][0]
+            labels = batch[:][1]
+            data = data.type(torch.float)
+            labels = labels.type(torch.LongTensor)
 
-                data = data.to(self.device)
-                labels = labels.to(self.device)
-                self.optimizer.zero_grad()
+            data = data.to(self.device)
+            labels = labels.to(self.device)
+            self.optimizer.zero_grad()
 
-                features = self.source_encoder(data)
-                predictions = self.classifier(features)
-                loss = self.criterion(predictions, labels)
+            features = self.source_encoder(data)
+            predictions = self.classifier(features)
+            loss = self.criterion(predictions, labels)
 
-                loss.backward()
-                self.optimizer.step()
-                print(f'Epoch {epoch + 1}, Batch {index + 1}/{self.num_batches}, Loss: {loss.item()}')
+            loss.backward()
+            self.optimizer.step()
+            
+            if (iteration + 1) % 100 == 0:
+                print(f'Iteration {iteration + 1}, Loss: {loss.item()}')
 
         print("Finished Training")

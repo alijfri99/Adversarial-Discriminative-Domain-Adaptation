@@ -15,9 +15,8 @@ source_encoder = ResNet18Encoder().to(device)
 target_encoder = ResNet18Encoder().to(device)
 classifier = torch.nn.Linear(512, 31).to(device)
 discriminator = OfficeDiscriminator(512).to(device)
-classification_epochs = 909
-batch_size = 128
-adaptation_iterations = 20000
+num_iterations = 20000
+batch_size = 64
 classification_criterion = torch.nn.CrossEntropyLoss()
 
 classification_optimizer = torch.optim.SGD(list(source_encoder.parameters()) + list(classifier.parameters()), lr=0.001)
@@ -26,6 +25,6 @@ target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.00
 
 print('Starting the Amazon --> Webcam experiment.')
 
-experiment = Experiment(amazon, webcam, source_encoder, target_encoder, classifier, discriminator, classification_epochs, batch_size, classification_criterion,
-                        classification_optimizer, discriminator_optimizer, target_encoder_optimizer, adaptation_iterations, device)
+experiment = Experiment(amazon, webcam, source_encoder, target_encoder, classifier, discriminator, num_iterations, batch_size, classification_criterion,
+                        classification_optimizer, discriminator_optimizer, target_encoder_optimizer, device)
 experiment.run()
