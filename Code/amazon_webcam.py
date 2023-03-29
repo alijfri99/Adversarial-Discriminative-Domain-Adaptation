@@ -19,7 +19,7 @@ num_iterations = 20000
 batch_size = 64
 classification_criterion = torch.nn.CrossEntropyLoss()
 
-classification_optimizer = torch.optim.SGD(list(source_encoder.parameters()) + list(classifier.parameters()), lr=0.001)
+classification_optimizer = torch.optim.SGD(list(source_encoder.parameters()) + list(classifier.parameters()), lr=0.001, momentum=0.9)
 discriminator_optimizer = torch.optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
 target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
