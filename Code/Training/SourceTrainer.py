@@ -37,6 +37,6 @@ class SourceTrainer:
             self.optimizer.step()
             
             if (iteration + 1) % 100 == 0:
-                print(f'Iteration {iteration + 1}, Loss: {loss.item()}')
+                print(f'Source Training: Iteration {iteration + 1}, Loss: {loss.item()}')
 
         print("Finished Training")

@@ -31,7 +31,7 @@ class Adapter:
             target_encoder_loss = self.train_target_encoder()
             
             if (iteration + 1) % 100 == 0:
-                print(f'Iteration {iteration + 1}: Discriminator Loss: {discriminator_loss:.2f}, Target Encoder Loss: {target_encoder_loss:.2f}')
+                print(f'Adaptation: Iteration {iteration + 1}, Discriminator Loss: {discriminator_loss:.2f}, Target Encoder Loss: {target_encoder_loss:.2f}')
                 print('-' * 20)
                 target_target = NetworkTester(self.target_encoder, self.classifier, self.target_dataset, self.batch_size, self.device)
                 target_target.test()
