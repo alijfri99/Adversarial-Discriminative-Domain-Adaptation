@@ -14,9 +14,6 @@ class SourceTrainer:
         self.batch_size = batch_size
         self.device = device
         self.shuffle = shuffle
-
-        if len(source_dataset) % batch_size != 0:
-            self.num_batches += 1
         
     def train(self):
         train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
