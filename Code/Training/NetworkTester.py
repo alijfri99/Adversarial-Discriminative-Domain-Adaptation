@@ -46,4 +46,4 @@ class NetworkTester:
 
             for i in range(numpy.max(self.target_dataset.labels) + 1):
                 Accuracy = 100.0 *  n_class_correct[i]/ n_class_samples[i]
-                print(f'Accuracy of class {i}: {Accuracy:.2f} %')
+                print(f'Accuracy of class {self.target_dataset.class_dict[i]}: {Accuracy:.2f} %')
