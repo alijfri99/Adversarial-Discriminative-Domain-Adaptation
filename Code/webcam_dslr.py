@@ -23,7 +23,7 @@ classification_optimizer = torch.optim.SGD(list(source_encoder.parameters()) + l
 discriminator_optimizer = torch.optim.Adam(discriminator.parameters(), lr=0.0002, betas=(0.5, 0.999))
 target_encoder_optimizer = torch.optim.Adam(target_encoder.parameters(), lr=0.0002, betas=(0.5, 0.999))
 
-print('Starting the DSLR --> Webcam experiment.')
+print('Starting the Webcam --> DSLR experiment.')
 
 experiment = Experiment(webcam, dslr, source_encoder, target_encoder, classifier, discriminator, num_iterations, batch_size, classification_criterion,
                         classification_optimizer, discriminator_optimizer, target_encoder_optimizer, device)
