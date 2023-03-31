@@ -15,7 +15,7 @@ class SourceTrainer:
         self.device = device
         
     def train(self):
-        train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
+        train_loader = DataLoader(self.source_dataset, self.batch_size)
 
         for iteration in range(self.num_iterations):
             batch = next(iter(train_loader))
