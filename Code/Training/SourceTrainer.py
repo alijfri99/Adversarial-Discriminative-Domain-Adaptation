@@ -4,7 +4,7 @@ from torch.utils.data import DataLoader
 
 class SourceTrainer:
     def __init__(self, source_encoder, classifier,  source_dataset, criterion, optimizer,
-                     num_iterations, batch_size, device, shuffle=True):
+                     num_iterations, batch_size, device):
         self.source_encoder = source_encoder
         self.classifier = classifier
         self.source_dataset = source_dataset
@@ -13,7 +13,6 @@ class SourceTrainer:
         self.num_iterations = num_iterations
         self.batch_size = batch_size
         self.device = device
-        self.shuffle = shuffle
         
     def train(self):
         train_loader = DataLoader(self.source_dataset, self.batch_size, self.shuffle)
