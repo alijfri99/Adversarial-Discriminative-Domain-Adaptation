@@ -9,4 +9,5 @@ Code/Experiments/__pycache__/
 Data/
 StoredDatasets/
 Docs/*
-!Docs/Docs.txt
+!Docs/Docs.pdf
+!Docs/Docs.tex
