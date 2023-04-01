@@ -15,7 +15,7 @@ class SourceTrainer:
         self.device = device
         
     def train(self):
-        train_loader = DataLoader(self.source_dataset, self.batch_size)
+        train_loader = DataLoader(self.source_dataset, self.batch_size, True)
 
         for iteration in range(self.num_iterations):
             batch = next(iter(train_loader))
