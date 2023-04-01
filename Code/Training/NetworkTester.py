@@ -11,7 +11,6 @@ class NetworkTester:
         self.batch_size = batch_size
         self.device = device
 
-
     def test(self):
         test_loader = DataLoader(self.target_dataset, self.batch_size, False)
         
