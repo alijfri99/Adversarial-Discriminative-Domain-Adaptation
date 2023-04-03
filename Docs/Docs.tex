@@ -2,6 +2,12 @@
 
 \usepackage[top=2cm, bottom=2cm, right=2cm, left=2cm]{geometry}
 
+\usepackage{caption}
+\usepackage[table]{xcolor}
+
+\usepackage{array}
+\newcolumntype{P}[1]{>{\centering\arraybackslash}p{#1}}
+
 \usepackage{hyperref}
 \hypersetup{
     colorlinks,
@@ -55,7 +61,7 @@
 			\item \texttt{Processors}: The \texttt{LabeledDatasetExtractor} class relies on a \textit{processor} to transform a single element of a dataset into an intended format. Therefore, it uses a processor on each element of a dataset it extracts. Since all the datasets used in \cite{adda} consist of images, the \texttt{Processors} module contains a single concrete class called \texttt{ImageProcessor}. This class normalizes an image into the range $[0, 255]$. The \texttt{ImageProcessor} class also allows resizing an image to an intended size, as well as converting an image to grayscale.
 			\item \texttt{Datasets}: This module is used for loading entire datasets extracted by an extractor. Since all the datasets used in \cite{adda} are labeled, the \texttt{Datasets} module contains a single class. This class is called \texttt{LabeledDataset} and it follows the conventions of writing datasets in PyTorch.
 		\end{enumerate}
-		In addition, the project contains six \texttt{.py} files, one for each of the experiments performed in \cite{adda}. Each of the aforementioned files (\texttt{mnist\_usps.py}, \texttt{usps\_mnist.py}, \texttt{svhn\_mnist.py}, \texttt{modality\_adaptation.py}, \texttt{amazon\_webcam.py}, \texttt{dslr\_webcam.py}, \texttt{webcam\_dslr.py}) uses the \texttt{Experiment} class to run the experiment indicated in its name. Next, we discuss each of the modules described earlier in finer detail.
+		In addition, the project contains seven \texttt{.py} files, one for each of the experiments performed in \cite{adda}. Each of the aforementioned files (\texttt{mnist\_usps.py}, \texttt{usps\_mnist.py}, \texttt{svhn\_mnist.py}, \texttt{modality\_adaptation.py}, \texttt{amazon\_webcam.py}, \texttt{dslr\_webcam.py}, \texttt{webcam\_dslr.py}) uses the \texttt{Experiment} class to run the experiment indicated in its name. Next, we discuss each of the modules described earlier in finer detail.
 		\subsection{The Training Module}
 		As mentioned earlier, the \texttt{Training} module consists of three classes. These classes are called \texttt{SourceTrainer}, \texttt{Adapter}, and \texttt{NetworkTester}. Each class implements a single stage of the learning framework proposed in \cite{adda}. Here, we describe the details of these classes.
 		\subsubsection{The SourceTrainer Class}
@@ -95,9 +101,26 @@
 		\pagebreak
 		\section{Replicated Experiments}
 		We replicated all seven experiments in \cite{adda}. The datasets used in the experiments of \cite{adda} are MNIST, USPS, SVHN \cite{svhn}, NYU Depth \cite{nyud2} and Office-31 \cite{office31}.\\\\
-		The first three experiments in \cite{adda} are performed on the MNIST, USPS and SVHN datasets. All three of these datasets consist of digits 0-9 spread across ten classes. Specifically, these experiments are MNIST $\rightarrow$ USPS, USPS $\rightarrow$ MNIST and SVHN $\rightarrow$ MNIST.\\\\
-		The fourth experiment of \cite{adda} is performed on a subset of nineteen classes from the labeled portion of the NYU Depth dataset. This dataset consists of RGB and depth images captured in several indoor scenes. Specifically, this experiment chooses a subset of the RGB images in the dataset as the source domain and a different subset of the depth images as the target domain.\\\\
-		The rest of the experiments in \cite{adda} are performed on the Office-31 dataset. This dataset contains three different domains, each having the same thirty one classes. The three domains in this dataset are \textit{amazon}, \textit{dslr} and \textit{webcam}. The images in the \textit{amazon} domain are downloaded from \texttt{www.amazon.com}, while the images in the \textit{dslr} and \textit{webcam} domains are captured using a high-definition camera and a low-definition camera, respectively. The experiments performed on the Office-31 dataset in \cite{adda} are amazon $\rightarrow$ webcam, dslr $\rightarrow$ webcam and webcam $\rightarrow$ dslr.
+		The first three experiments in \cite{adda} are performed on the MNIST, USPS and SVHN datasets. All three of these datasets consist of digits 0 - 9 spread across ten classes. Specifically, these experiments are MNIST $\rightarrow$ USPS, USPS $\rightarrow$ MNIST and SVHN $\rightarrow$ MNIST.\\\\
+		The fourth experiment of \cite{adda} is performed on a subset of nineteen classes from the labeled portion of the NYU Depth dataset. This dataset consists of RGB and depth images captured in several indoor scenes. Specifically, this experiment in \cite{adda} is performed by choosing a subset of the RGB images in the dataset as the source domain and a different subset of the depth images as the target domain.\\\\
+		The rest of the experiments in \cite{adda} are performed on the Office-31 dataset. This dataset contains three different domains, each having the same thirty one classes. The three domains in this dataset are \textit{amazon}, \textit{dslr} and \textit{webcam}. The images in the \textit{amazon} domain are downloaded from \texttt{www.amazon.com}, while the images in the \textit{dslr} and \textit{webcam} domains are captured using a high-definition camera and a low-definition camera, respectively. The experiments performed on the Office-31 dataset in \cite{adda} are amazon $\rightarrow$ webcam, dslr $\rightarrow$ webcam and webcam $\rightarrow$ dslr.\\\\
+		We ran each of the first three experiments ten times. Due to limited computational resources, we were able to run each of the other experiments three times. We report the mean classification accuracy, plus or minus the standard deviation of classification accuracy for each experiment. In tables referring to reported results, `Source Only' refers to the classification accuracy of the source encoder and the classifier on the target domain right after the completion of the first stage of the learning framework. `Adaptation' refers to the classification accuracy of the target encoder and the classifier on the target domain after the completion of the entire learning procedure.
+		\subsection{The MNIST $\rightarrow$ USPS Experiment}
+		We implemented this experiment in \texttt{mnist\_usps.py}. Similar to \cite{adda}, we used modified LeNet networks as our source and target encoders. Furthermore, we ran each of the first two stages of the learning framework for 10000 iterations using a batch size of 128. For the first stage, we used the Adam optimizer with a learning rate of 0.001. For the second stage, we used the Adam optimizer with a learning rate of 0.0002, $\beta_1 = 0.5$ and $\beta_2 = 0.999$. We converted all images to grayscale and resized each to $28 \times 28$. Table 1 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $65.31 \pm 3.17$ & $88.73 \pm 3.51$\\
+				\hline
+				\cite{adda} & $75.2 \pm 1.6$ & $89.4 \pm 0.2$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on MNIST $\rightarrow$ USPS}
+		\end{table}
+		We observe that our replication of MNIST $\rightarrow$ USPS yields similar results to that of \cite{adda}. Additionally, because of the significant improvement in the classification accuracy on the target domain after the adaptation stage, we conclude that the learning framework of \cite{adda} is effective in solving this task.
 	\bibliographystyle{ieeetr}
 	\bibliography{citations}
 \end{document}
