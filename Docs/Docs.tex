@@ -48,7 +48,6 @@
 		\end{figure}
 		\subsection{Outline of the Document}
 		The rest of this document is organized as follows: Firstly, we explain how our implementation is structured and what the role of each module is. We attempt to follow a `top-down' approach in explaining the implementation. That is, we begin by discussing the more important parts of the code and then focus on the other modules. Following an explanation of the implementation, we report the results of our replications of the experiments performed in \cite{adda}. As mentioned earlier, we aim to offer insights into possible reasons behind the success or failure of each replicated experiment. In addition, we should note that since we have implemented \cite{adda} concretely, and since the relevant mathematical content is present in \cite{adda} as well, we focus on an intuitive understanding of the learning framework proposed in \cite{adda} throughout this document. Throughout this document, we let S $\rightarrow$ T denote an experiment in which S is the source domain and T is the target domain.
-		\pagebreak
 		\section{The Implementation}
 		Before discussing the low-level details of the implementation, we describe the structure of the project and the role of each module.
 		\subsection{Overview of the Implementation}
@@ -98,7 +97,6 @@
 		Earlier, we mentioned that we used this module for loading entire datasets extracted by an extractor. Because of the reasons explained previously, this module contains a single class called \texttt{LabeledDataset}.
 		\subsubsection{The LabeledDataset Class}
 		This class loads a dataset extracted by \texttt{LabeledDatasetExtractor} entirely into memory. The constructor of this class receives the path to the folder that contains the extracted dataset and the name of the dataset. In addition, it receives a transform parameter and a sample size parameter. The transform parameter indicates a transform or a list of transforms that can be applied to each element in the extracted dataset. This is similar to how the default datasets available in PyTorch accept transforms. The sample size parameter is used for randomly sampling a subset of the extracted dataset instead of using the entire dataset. We created this feature since \cite{adda} only uses a randomly-sampled subset of the MNIST \cite{mnist} and USPS \cite{usps} datasets in the MNIST $\rightarrow$ USPS and USPS $\rightarrow$ MNIST experiments. Furthermore, the constructor of \texttt{LabeledDataset} loads an extracted dataset and the numerical class labels in the extracted dataset using the given path and dataset name. Additionally, it loads the name associated with each numerical class label in the extracted dataset. The rest of the implementation of \texttt{LabeledDataset} follows the conventions of writing datasets in PyTorch.
-		\pagebreak
 		\section{Replicated Experiments}
 		We replicated all seven experiments in \cite{adda}. The datasets used in the experiments of \cite{adda} are MNIST, USPS, SVHN \cite{svhn}, NYU Depth \cite{nyud2} and Office-31 \cite{office31}.\\\\
 		The first three experiments in \cite{adda} are performed on the MNIST, USPS and SVHN datasets. All three of these datasets consist of digits 0 - 9 spread across ten classes. Specifically, these experiments are MNIST $\rightarrow$ USPS, USPS $\rightarrow$ MNIST and SVHN $\rightarrow$ MNIST.\\\\
@@ -120,9 +118,9 @@
 			\end{tabular}
 			\caption{Comparison of results on MNIST $\rightarrow$ USPS}
 		\end{table}
-		We observe that our replication of MNIST $\rightarrow$ USPS yields similar results to that of \cite{adda}. Additionally, because of the significant improvement in the classification accuracy on the target domain after the adaptation stage, we conclude that the learning framework of \cite{adda} is effective in solving this task.
+		We observe that our replication of MNIST $\rightarrow$ USPS yields similar results to those of \cite{adda}. Additionally, because of the significant improvement in the classification accuracy on the target domain after the adaptation stage, we conclude that the learning framework of \cite{adda} is effective in solving this task.
 		\subsection{The USPS $\rightarrow$ MNIST Experiment}
-		We implemented this experiment in \texttt{usps\_mnist.py}. Following \cite{adda}, other conditions of this experiment were exactly like those of MNIST $\rightarrow$ USPS.
+		We implemented this experiment in \texttt{usps\_mnist.py}. Following \cite{adda}, other conditions of this experiment were exactly like those of MNIST $\rightarrow$ USPS. Table 2 shows the results of this replicated experiment.
 		\begin{table}[H]
 			\centering
 			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
@@ -136,7 +134,88 @@
 			\end{tabular}
 			\caption{Comparison of results on USPS $\rightarrow$ MNIST}
 		\end{table}
-		We observe that our replication of USPS $\rightarrow$ MNIST also yields similar results to that of \cite{adda}. Additionally, because of the significant improvement in the classification accuracy on the target domain after the adaptation stage, we conclude that the learning framework of \cite{adda} is effective in solving this task.
+		We observe that our replication of USPS $\rightarrow$ MNIST also yields similar results to those of \cite{adda}. Additionally, because of the significant improvement in the classification accuracy on the target domain after the adaptation stage, we conclude that the learning framework of \cite{adda} is effective in solving this task as well.
+		\subsection{The SVHN $\rightarrow$ MNIST Experiment}
+		We implemented this experiment in \texttt{svhn\_mnist.py}. Following \cite{adda}, other conditions of this experiment were exactly like those of MNIST $\rightarrow$ USPS, except the dataset sizes. Table 3 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $58.54 \pm 2.77$ & $32.63 \pm 2.43$\\
+				\hline
+				\cite{adda} & $60.1 \pm 1.1$ & $76.0 \pm 1.8$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on SVHN $\rightarrow$ MNIST}
+		\end{table}
+		We observe that our replication of SVHN $\rightarrow$ MNIST does not yield similar results to those of \cite{adda}. Since our `Source Only' classification accuracy is already much higher than our `Adaptation' classification accuracy, we can consider attributing the aforementioned discrepancy to a problem in the adaptation stage. Nowadays, the traditional way of adversarial training is known to be difficult to converge. We propose that building the adaptation stage on more recent adversarial training methods such as WGANs \cite{wgan} might be a potential solution to this problem. Also, since the classification accuracy of the source encoder and the classifier on the source domain was $98.58 \pm 0.14$ percent, we conclude that our preprocessing of the SVHN dataset is not a primary cause of the current problem.
+		\subsection{The Modality Adaptation Experiment}
+		We implemented this experiment in \texttt{modality\_adaptation.py}. Following \cite{adda}, we only considered 19 classes of the NYU Depth dataset and ignored the rest. That is, we only cropped objects belonging to the following classes: bathtub, bed, bookshelf, box, chair, counter, desk, door, dresser, garbage bin, lamp, monitor, night stand, pillow, sink, sofa, table, television and toilet. Our code for preprocessing this dataset as described in \cite{adda} can be found on \cite{nyud2jpg}. However, we should note that the official train/test split of the NYU Depth dataset that we could find \cite{nyud2split} was different from the split described in \cite{adda}. Also, we did not use HHA encoding on the depth maps. Instead, the three channels of each encoded depth map are duplicates of the original single-channel depth map. As stated earlier, due to limited computational resources, we used a ResNet18 architecture instead of VGG16 for this experiment. Furthermore, we ran each of the first two stages of the learning framework for 20000 iterations using a batch size of 128. For the first stage, we used the Adam optimizer with a learning rate of 0.001. For the second stage, we used the Adam optimizer with a learning rate of 0.0002, $\beta_1 = 0.5$ and $\beta_2 = 0.999$. We ran this experiment on Google Colab. Table 4 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $9.32 \pm 0.24$ & $15.32 \pm 1.40$\\
+				\hline
+				\cite{adda} & $13.9$ & $21.1$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on the modality adaptation experiment}
+		\end{table}
+		We observe that our replication of the modality adaptation experiment yields similar results to those of \cite{adda}, despite the fact that we did not use HHA encoding on the depth maps and also used a simpler architecture for our encoders. We have several reasons to think so. Firstly, the difference between our `Adaptation' and `Source Only' classification accuracies is similar to that of \cite{adda}. Moreover, unlike other experiments, \cite{adda} does not report the results of other unsupervised domain adaptation methods on this experiment. Furthermore, unlike previous experiments, \cite{adda} does not include the standard deviation of the classification accuracies on this experiment. Finally, \cite{adda} reports that a classifier trained directly on the target domain yields an average classification accuracy of 46.8 percent, implying that the dataset chosen and preprocessed specifically as described is not so suitable for the task at hand.
+		\subsection{The Amazon $\rightarrow$ Webcam Experiment}
+		We implemented this experiment in \texttt{amazon\_webcam.py}. Following \cite{adda}, for the first stage of the learning framework, we used the SGD optimizer with a learning rate of 0.001 and a momentum of 0.9. For the second stage, we used the Adam optimizer with a learning rate of 0.0002, $\beta_1 = 0.5$ and $\beta_2 = 0.999$. We ran both stages for 20000 iterations with a batch size of 64. However, for reasons explained earlier, we used a ResNet18 architecture instead of ResNet50. We ran this experiment on Google Colab. Table 5 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $23.77 \pm 0.43$ & $55.0 \pm 2.94$\\
+				\hline
+				\cite{adda} & $64.2$ & $75.1$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on Amazon $\rightarrow$ Webcam}
+		\end{table}
+		We observe that our replication of amazon $\rightarrow$ webcam does not yield similar results to those of \cite{adda}. However, the difference between our `Source Only' and `Adaptation' classification accuracies in this experiment is still high, even much higher than that of \cite{adda}. Also, our `Source Only' classification accuracy is much lower than that of \cite{adda}. This implies that our adaptation step was performed correctly. However, we suspect that our different results overall are due to the fact that we used a simpler architecture for our encoders.
+		\subsection{The DSLR $\rightarrow$ Webcam Experiment}
+		We implemented this experiment in \texttt{dslr\_webcam.py}. Following \cite{adda}, we used the same hyperparameters as those in the amazon $\rightarrow$ webcam experiment. However, for reasons explained earlier, we used a ResNet18 architecture instead of ResNet50. We ran this experiment on Google Colab. Table 6 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $61.71 \pm 0.82$ & $86.92 \pm 0.62$\\
+				\hline
+				\cite{adda} & $96.1$ & $97.0$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on DSLR $\rightarrow$ Webcam}
+		\end{table}
+		We observe that our replication of dslr $\rightarrow$ webcam yields comparable results to those of \cite{adda}. Specifically, the difference between our `Source Only' and `Adaptation' classification accuracies in this experiment is very high, implying that the adaptation step has a considerable impact on the ultimate classification accuracy. Furthermore, the `Source Only' classification accuracy of this experiment reported in \cite{adda} is already very high. This leads us to believe that our utilization of a simpler architecture had some negative impact on our final classification accuracy.
+		\subsection{The Webcam $\rightarrow$ DSLR Experiment}
+		We implemented this experiment in \texttt{webcam\_dslr.py}. Following \cite{adda}, we used the same hyperparameters as those in the amazon $\rightarrow$ webcam experiment. However, for reasons explained earlier, we used a ResNet18 architecture instead of ResNet50. We ran this experiment on Google Colab. Table 7 shows the results of this replicated experiment.
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|P{40mm}|P{40mm}|P{40mm}|}
+				\hline
+				\cellcolor{gray!50} & Source Only (\%) & Adaptation (\%)\\
+				\hline
+				Ours & $82.2 \pm 1.23$ & $87.75 \pm 0.48$\\
+				\hline
+				\cite{adda} & $97.8$ & $99.6$\\
+				\hline
+			\end{tabular}
+			\caption{Comparison of results on Webcam $\rightarrow$ DSLR}
+		\end{table}
+		We observe that our replication of webcam $\rightarrow$ dslr yields comparable results to those of \cite{adda}. Specifically, there is some difference between our `Source Only' and `Adaptation' classification accuracies in this experiment, implying that the adaptation step has had some impact on the ultimate classification accuracy. Furthermore, the `Source Only' classification accuracy of this experiment reported in \cite{adda} is already very high. This leads us to believe that our utilization of a simpler architecture had some negative impact on our final classification accuracy.
+		\section{Conclusion and Future Work}
 	\bibliographystyle{ieeetr}
 	\bibliography{citations}
 \end{document}
