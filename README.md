@@ -4,10 +4,8 @@ While methods based on deep learning have achieved state-of-the-art results on n
 This project is an implementation of "Adversarial Discriminative Domain Adaptation" [2]. We implemented the proposed learning framework and replicated all seven experiments of [2]. For further information, please refer to [Docs/Docs.pdf](./Docs/Docs.pdf).  
 
 # References
-[1] G. Wilson and D. J. Cook, “A survey of unsupervised deep domain adap-
-tation,” ACM Transactions on Intelligent Systems and Technology (TIST),
+[1] G. Wilson and D. J. Cook, “A survey of unsupervised deep domain adaptation,” ACM Transactions on Intelligent Systems and Technology (TIST),
 vol. 11, no. 5, pp. 1–46, 2020.  
 
-[2] E. Tzeng, J. Hoffman, K. Saenko, and T. Darrell, “Adversarial discrimina-
-tive domain adaptation,” in Proceedings of the IEEE conference on computer
+[2] E. Tzeng, J. Hoffman, K. Saenko, and T. Darrell, “Adversarial discriminative domain adaptation,” in Proceedings of the IEEE conference on computer
 vision and pattern recognition, pp. 7167–7176, 2017.
